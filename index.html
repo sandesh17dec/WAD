@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Farmers Club - Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"></script>
+    <style>
+        body { background-color: #f8f9fa; font-family: 'Arial', sans-serif; }
+        .sidebar { height: 100vh; background-color: #004aad; color: white; width: 250px; position: fixed; transition: all 0.3s; }
+        .sidebar.collapsed { width: 80px; }
+        .sidebar a { color: white; padding: 12px; display: block; text-decoration: none; transition: 0.3s; }
+        .sidebar a:hover { background-color: #0056b3; }
+        .sidebar .logo { padding: 15px; font-size: 20px; font-weight: bold; text-align: center; }
+        .sidebar .toggle-btn { cursor: pointer; text-align: center; padding: 10px; }
+        .content { margin-left: 260px; padding: 20px; transition: margin-left 0.3s; }
+        .collapsed + .content { margin-left: 100px; }
+        .card { border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="logo">The Farmers Club</div>
+        <div class="toggle-btn" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+        </div>
+        <a href="#" onclick="showSection('dashboard')"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="#" onclick="showSection('products')"><i class="fas fa-box"></i> Products</a>
+        <a href="#" onclick="showSection('customers')"><i class="fas fa-users"></i> Customers</a>
+        <a href="#" onclick="showSection('schemes')"><i class="fas fa-landmark"></i> Govt. Schemes</a>
+        <a href="#" onclick="showSection('reports')"><i class="fas fa-chart-line"></i> Reports</a>
+        <a href="#" onclick="showSection('chat')"><i class="fas fa-comments"></i> Chat</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content" id="content">
+        <!-- Dashboard -->
+        <div id="dashboard">
+            <h2>Welcome to The Farmers Club</h2>
+            <p>Your direct trade platform connecting farmers and customers.</p>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card text-white bg-primary p-3">
+                        <h4>Total Farmers</h4>
+                        <p>1,250+</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-white bg-success p-3">
+                        <h4>Total Customers</h4>
+                        <p>5,000+</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-white bg-warning p-3">
+                        <h4>Active Trades</h4>
+                        <p>300+ in the last 24 hours</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Products Section -->
+        <div id="products" style="display:none;">
+            <h2>Manage Your Products</h2>
+            <form id="productForm">
+                <div class="mb-3">
+                    <label for="productName" class="form-label">Product Name</label>
+                    <input type="text" class="form-control" id="productName" required>
+                </div>
+                <div class="mb-3">
+                    <label for="productPrice" class="form-label">Price (₹)</label>
+                    <input type="number" class="form-control" id="productPrice" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Product</button>
+            </form>
+            <h3 class="mt-4">Available Products</h3>
+            <ul id="productList" class="list-group mt-2"></ul>
+        </div>
+
+        <!-- Customers Section -->
+        <div id="customers" style="display:none;">
+            <h2>Customer Benefits & Discounts</h2>
+            <ul>
+                <li><strong>Flat 10% Off</strong> on orders above ₹500.</li>
+                <li><strong>Free Delivery</strong> for first-time buyers.</li>
+                <li><strong>Farm-to-Table Freshness</strong> guaranteed.</li>
+                <li><strong>Loyalty Program</strong> – Earn points & get rewards.</li>
+            </ul>
+        </div>
+
+        <!-- Govt. Schemes Section -->
+        <div id="schemes" style="display:none;">
+            <h2>Government Schemes for Farmers</h2>
+            <ul id="schemeList">
+                <li>
+                    <strong>PM-KISAN</strong> – ₹6000/year for farmers. 
+                    <a href="https://pmkisan.gov.in/" target="_blank" class="btn btn-sm btn-success">Check Eligibility</a>
+                </li>
+                <li><strong>NABARD Loan</strong> – Low-interest farm loans.</li>
+                <li><strong>Kisan Credit Card</strong> – Easy access to funds.</li>
+            </ul>
+            <button class="btn btn-primary mt-2" id="viewMoreSchemes">View More</button>
+        </div>
+
+        <!-- Reports Section -->
+        <div id="reports" style="display:none;">
+            <h2>Reports & Analytics</h2>
+            <p>Coming soon...</p>
+        </div>
+
+        <!-- Chat Section -->
+        <div id="chat" style="display:none;">
+            <h2>Chat with Farmers & Customers</h2>
+            <p>Feature under development...</p>
+        </div>
+    </div>
+
+<script>
+    function toggleSidebar() {
+        document.getElementById("sidebar").classList.toggle("collapsed");
+    }
+
+    function showSection(section) {
+        document.querySelectorAll('.content > div').forEach(div => div.style.display = "none");
+        document.getElementById(section).style.display = "block";
+    }
+
+    // Product Addition Logic
+    document.getElementById("productForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        let name = document.getElementById("productName").value;
+        let price = document.getElementById("productPrice").value;
+        if (name && price) {
+            let productItem = document.createElement("li");
+            productItem.classList.add("list-group-item");
+            productItem.innerHTML = <strong>${name}</strong> - ₹${price};
+            document.getElementById("productList").appendChild(productItem);
+            document.getElementById("productForm").reset();
+        }
+    });
+
+    // Govt. Schemes - View More Feature
+    document.getElementById("viewMoreSchemes").addEventListener("click", function() {
+        let extraSchemes = [
+            <li><strong>Fasal Bima Yojana</strong> – Crop insurance for farmers.</li>,
+            <li><strong>Soil Health Card</strong> – Helps improve soil quality.</li>,
+            <li><strong>PM Krishi Sinchai</strong> – Irrigation support for farmers.</li>
+        ];
+        extraSchemes.forEach(scheme => {
+            document.getElementById("schemeList").innerHTML += scheme;
+        });
+        this.style.display = "none"; // Hide button after clicking
+    });
+</script>
+
+</body>
+</html>
