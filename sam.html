@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+<h2>JavaScript Validation</h2>
+
+<form asp-action="Create">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="ScheduleStartTime" class="control-label"></label>
+        <input asp-for="ScheduleStartTime" class="form-control" id="scheduleStartTime" />
+        <span asp-validation-for="ScheduleStartTime" class="text-danger"></span>
+    </div>
+<select asp-for="CandidateID" class="form-control" id="candId">
+        @{
+            if (candidates != null)
+            {
+                foreach (var cand in candidates)
+                {
+                    <option value='@cand.ID'>@cand.DisplayName</option>
+                }
+            }
+        }
+    </select>
+
+<div class="form-group">
+
+        <input onclick="addTheEvent(); return false;" type="submit" value="Add  " class="btn btn-primary" />
+
+    </div>
+
+</form> 
+</body>
+</html>
